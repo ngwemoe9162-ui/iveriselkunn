@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IVR | Iveriselkunn - Premium Game Item Top-Up Store</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#e6fff4',
+                            100: '#c3ffe3',
+                            400: '#00f5a0',
+                            500: '#00e676',
+                            600: '#10b981',
+                            700: '#047857',
+                            dark: '#0d1117',
+                            card: '#161b22',
+                            glass: 'rgba(22, 27, 34, 0.75)'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'neon': '0 0 20px rgba(0, 230, 118, 0.35)',
+                        'neon-lg': '0 0 35px rgba(0, 245, 160, 0.5)',
+                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)'
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #f3f4f6;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism styling */
+        .glass-panel {
+            background: rgba(22, 27, 34, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-panel-interactive {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-panel-interactive:hover {
+            border-color: rgba(0, 230, 118, 0.5);
+            box-shadow: 0 0 25px rgba(0, 230, 118, 0.25);
+            transform: translateY(-4px);
+        }
+
+        .glow-border {
+            border: 1px solid rgba(0, 230, 118, 0.4);
+            box-shadow: 0 0 15px rgba(0, 230, 118, 0.2);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 12px rgba(0, 245, 160, 0.6);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0d1117;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00e676;
+        }
+
+        /* Ticker Animation */
+        @keyframes ticker {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+        
+        .ticker-wrapper {
+            animation: ticker 20s linear infinite;
+        }
+        .ticker-wrapper:hover {
+            animation-play-state: paused;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-black">
+
+    <!-- Header / Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-gray-800/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-brand-400 flex items-center justify-center text-black font-black text-xl shadow-neon transition-transform group-hover:scale-105">
+                    <i class="fa-solid font-bold fa-bolt"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-extrabold text-xl tracking-wider text-white flex items-center gap-1">
+                        IVR <span class="text-brand-400 font-light text-sm tracking-normal">| Iveriselkunn</span>
+                    </span>
+                    <span class="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">Official Top-Up Store</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="#mlbb" onclick="switchGameTab('mlbb')" class="text-gray-300 hover:text-brand-400 text-sm font-medium transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-brand-500"></i> MLBB Diamonds
+                </a>
+                <a href="#pubg" onclick="switchGameTab('pubg')" class="text-gray-300 hover:text-brand-400 text-sm font-medium transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-crosshair text-brand-500"></i> PUBG Mobile UC
+                </a>
+                <a href="#instant-topup" class="text-gray-300 hover:text-brand-400 text-sm font-medium transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-bolt-lightning text-yellow-400"></i> Instant Order
+                </a>
+                <a href="#features" class="text-gray-300 hover:text-brand-400 text-sm font-medium transition-colors">
+                    Why Us
+                </a>
+            </nav>
+
+            <!-- Actions Header -->
+            <div class="flex items-center gap-4">
+                <a href="#instant-topup" class="relative group overflow-hidden px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-500 to-brand-400 text-black font-bold text-sm shadow-neon transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>Top Up Now</span>
+                </a>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-gray-300 hover:text-white p-2 rounded-lg bg-gray-800/50 focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass-panel border-b border-gray-800 px-4 pt-2 pb-6 space-y-3">
+            <a href="#mlbb" onclick="switchGameTab('mlbb'); toggleMobileMenu()" class="block py-2 text-gray-300 hover:text-brand-400 font-medium">
+                <i class="fa-solid fa-shield-halved text-brand-500 mr-2"></i> MLBB Diamonds
+            </a>
+            <a href="#pubg" onclick="switchGameTab('pubg'); toggleMobileMenu()" class="block py-2 text-gray-300 hover:text-brand-400 font-medium">
+                <i class="fa-solid fa-crosshair text-brand-500 mr-2"></i> PUBG Mobile UC
+            </a>
+            <a href="#instant-topup" onclick="toggleMobileMenu()" class="block py-2 text-gray-300 hover:text-brand-400 font-medium">
+                <i class="fa-solid fa-bolt-lightning text-yellow-400 mr-2"></i> Quick Order Form
+            </a>
+            <a href="#features" onclick="toggleMobileMenu()" class="block py-2 text-gray-300 hover:text-brand-400 font-medium">
+                Why Choose IVR
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+        <!-- Background Decorative Glows -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-500/15 rounded-full blur-[140px] pointer-events-none"></div>
+        <div class="absolute top-1/3 right-10 w-72 h-72 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Hero Left Content -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-panel border border-brand-500/30 text-brand-400 text-xs font-semibold tracking-wide">
+                        <span class="w-2 h-2 rounded-full bg-brand-400 animate-ping"></span>
+                        Iveriselkunn Game Item Shop
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight">
+                        Instant Game Top-Up & <br class="hidden sm:inline" />
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-brand-500 to-emerald-300 glow-text">
+                            Diamond And UC Store
+                        </span>
+                    </h1>
+
+                    <p class="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                        Fast, 100% Safe, and Automated recharge for Mobile Legends: Bang Bang Diamonds & PUBG Mobile UC. Direct in-game delivery in under 3 minutes.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
+                        <a href="#offers" class="px-8 py-4 rounded-xl bg-gradient-to-r from-brand-500 to-brand-400 text-black font-extrabold text-base shadow-neon hover:shadow-neon-lg transition-all hover:-translate-y-0.5 active:translate-y-0 text-center flex items-center justify-center gap-3">
+                            <i class="fa-solid fa-gamepad text-lg"></i>
+                            <span>View Packages</span>
+                        </a>
+                        <a href="#instant-topup" class="px-8 py-4 rounded-xl glass-panel text-white hover:text-brand-400 font-bold text-base hover:border-brand-500/50 transition-all text-center flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-calculator text-brand-400"></i>
+                            <span>Instant Calculator</span>
+                        </a>
+                    </div>
+
+                    <!-- Dynamic Stat Counters -->
+                    <div class="grid grid-cols-3 gap-4 pt-8 border-t border-gray-800/80 max-w-lg mx-auto lg:mx-0">
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-black text-white flex items-center justify-center lg:justify-start">
+                                <span id="stat-gamers">50</span>k+
+                            </p>
+                            <p class="text-xs text-gray-400 font-medium">Happy Gamers</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-black text-brand-400 flex items-center justify-center lg:justify-start">
+                                99.9%
+                            </p>
+                            <p class="text-xs text-gray-400 font-medium">Instant Delivery</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-black text-white flex items-center justify-center lg:justify-start">
+                                24/7
+                            </p>
+                            <p class="text-xs text-gray-400 font-medium">Live Support</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Right Cards Showcase -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-md lg:max-w-none">
+                        
+                        <!-- MLBB Featured Card -->
+                        <div class="glass-panel p-6 rounded-2xl glow-border relative z-20 shadow-2xl animate-float">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 rounded-xl bg-blue-600/30 border border-blue-500/40 flex items-center justify-center text-blue-400 text-2xl font-bold">
+                                        <i class="fa-solid fa-shield-halved"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-lg text-white">Mobile Legends</h3>
+                                        <p class="text-xs text-gray-400">Weekly Pass & Diamonds</p>
+                                    </div>
+                                </div>
+                                <span class="px-2.5 py-1 rounded-md bg-brand-500/20 text-brand-400 text-xs font-bold border border-brand-500/30">
+                                    Popular
+                                </span>
+                            </div>
+                            <div class="bg-gray-900/60 rounded-xl p-4 border border-gray-800 flex justify-between items-center mb-4">
+                                <div>
+                                    <span class="text-xs text-gray-400 block">Hot Choice</span>
+                                    <span class="text-sm font-bold text-white">257 Diamonds Pass</span>
+                                </div>
+                                <span class="text-brand-400 font-black text-lg">$4.85</span>
+                            </div>
+                            <button onclick="switchGameTab('mlbb'); scrollToOrder(257, 4.85, 'mlbb')" class="w-full py-2.5 rounded-xl bg-brand-500/20 hover:bg-brand-500 hover:text-black border border-brand-500/40 text-brand-400 font-bold text-sm transition-all flex items-center justify-center gap-2">
+                                <span>Quick Recharge</span>
+                                <i class="fa-solid fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
+
+                        <!-- PUBG Featured Card Overlay -->
+                        <div class="glass-panel p-5 rounded-2xl relative z-10 -mt-6 ml-6 border border-gray-700/50 shadow-xl opacity-90 hover:opacity-100 transition-opacity">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-amber-600/30 border border-amber-500/40 flex items-center justify-center text-amber-400 text-xl font-bold">
+                                        <i class="fa-solid fa-crosshair"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-sm text-white">PUBG Mobile UC</h4>
+                                        <p class="text-[11px] text-gray-400">660 UC + Bonus</p>
+                                    </div>
+                                </div>
+                                <span class="text-amber-400 font-black text-base">$9.99</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Offers Section -->
+    <section id="offers" class="py-16 relative bg-gray-950/40 border-y border-gray-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl">Select Game & Package</h2>
+                <p class="text-gray-400 mt-2 text-sm sm:text-base">Choose your game, select the diamond or UC bundle, and get instant delivery.</p>
+            </div>
+
+            <!-- Custom Tab Switcher -->
+            <div class="flex justify-center mb-10">
+                <div class="p-1.5 rounded-2xl glass-panel inline-flex gap-2 border border-gray-800">
+                    <button id="tab-btn-mlbb" onclick="switchGameTab('mlbb')" class="px-6 py-3 rounded-xl font-bold text-sm transition-all flex items-center gap-2 bg-gradient-to-r from-brand-500 to-brand-400 text-black shadow-neon">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>MLBB Diamonds</span>
+                    </button>
+                    <button id="tab-btn-pubg" onclick="switchGameTab('pubg')" class="px-6 py-3 rounded-xl font-bold text-sm text-gray-400 hover:text-white transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-crosshair"></i>
+                        <span>PUBG Mobile UC</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- MLBB Packages Grid -->
+            <div id="grid-mlbb" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                <!-- Javascript will dynamically inject MLBB items or static fallback -->
+            </div>
+
+            <!-- PUBG Packages Grid (Hidden by default) -->
+            <div id="grid-pubg" class="hidden grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                <!-- Javascript will dynamically inject PUBG items -->
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Instant Order Section -->
+    <section id="instant-topup" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Left Form Panel -->
+                <div class="lg:col-span-7 glass-panel p-6 sm:p-8 rounded-3xl border border-gray-800">
+                    <div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-800">
+                        <div class="w-10 h-10 rounded-xl bg-brand-500/20 text-brand-400 flex items-center justify-center font-bold">
+                            1
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Please Fill Your Order Form</h3>
+                            <p class="text-xs text-gray-400">Enter user account credentials and choose payment option</p>
+                        </div>
+                    </div>
+
+                    <form id="order-form" onsubmit="handleOrderSubmit(event)" class="space-y-6">
+                        
+                        <!-- 1. Game Selected Badge / Radio Switch -->
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Game Selected</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <button type="button" id="form-game-mlbb" onclick="switchGameTab('mlbb')" class="p-3 rounded-xl border border-brand-500 bg-brand-500/10 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-shield-halved text-brand-400"></i> MLBB Diamonds
+                                </button>
+                                <button type="button" id="form-game-pubg" onclick="switchGameTab('pubg')" class="p-3 rounded-xl border border-gray-800 bg-gray-900/50 text-gray-400 font-bold text-xs sm:text-sm flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-crosshair"></i> PUBG Mobile UC
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 2. ID Inputs -->
+                        <div id="id-fields-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2" id="label-user-id">
+                                    User ID <span class="text-brand-400">*</span>
+                                </label>
+                                <input type="text" id="user-id" required placeholder="e.g. 12345678" class="w-full bg-gray-900/80 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 text-sm">
+                            </div>
+                            <div id="zone-id-wrapper">
+                                <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">
+                                    Zone ID / Server ID <span class="text-brand-400">*</span>
+                                </label>
+                                <input type="text" id="zone-id" placeholder="e.g. 2024" class="w-full bg-gray-900/80 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 text-sm">
+                            </div>
+                        </div>
+
+                        <!-- ID Help Box -->
+                        <div class="p-3 rounded-xl bg-gray-900/60 border border-gray-800 text-xs text-gray-400 flex items-center gap-2">
+                            <i class="fa-solid fa-circle-info text-brand-400 text-base"></i>
+                            <span id="id-help-text">Open Mobile Legends profile. Your User ID and Zone ID are shown next to your avatar (e.g., 12345678 (2024)).</span>
+                        </div>
+
+                        <!-- Selected Package Indicator -->
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Selected Package</label>
+                            <div id="selected-package-box" class="p-4 rounded-xl bg-gray-900/90 border border-brand-500/50 flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <i id="selected-pkg-icon" class="fa-solid fa-gem text-brand-400 text-xl"></i>
+                                    <div>
+                                        <p id="selected-pkg-title" class="font-bold text-white text-sm">86 Diamonds</p>
+                                        <p id="selected-pkg-game" class="text-xs text-gray-400">Mobile Legends</p>
+                                    </div>
+                                </div>
+                                <span id="selected-pkg-price" class="text-brand-400 font-extrabold text-base">$1.65</span>
+                            </div>
+                        </div>
+
+                        <!-- Payment Methods -->
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Select Payment Method</label>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="payment" value="KPay" checked class="peer sr-only">
+                                    <div class="p-3 rounded-xl border border-gray-800 bg-gray-900/60 peer-checked:border-brand-500 peer-checked:bg-brand-500/10 text-center transition-all">
+                                        <i class="fa-solid fa-mobile-screen-button text-blue-400 mb-1 block text-lg"></i>
+                                        <span class="text-xs font-bold text-white block">KPay</span>
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="payment" value="WavePay" class="peer sr-only">
+                                    <div class="p-3 rounded-xl border border-gray-800 bg-gray-900/60 peer-checked:border-brand-500 peer-checked:bg-brand-500/10 text-center transition-all">
+                                        <i class="fa-solid fa-wallet text-yellow-400 mb-1 block text-lg"></i>
+                                        <span class="text-xs font-bold text-white block">WavePay</span>
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="payment" value="Banking" class="peer sr-only">
+                                    <div class="p-3 rounded-xl border border-gray-800 bg-gray-900/60 peer-checked:border-brand-500 peer-checked:bg-brand-500/10 text-center transition-all">
+                                        <i class="fa-solid fa-building-columns text-emerald-400 mb-1 block text-lg"></i>
+                                        <span class="text-xs font-bold text-white block">AYA</span>
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="payment" value="Crypto" class="peer sr-only">
+                                    <div class="p-3 rounded-xl border border-gray-800 bg-gray-900/60 peer-checked:border-brand-500 peer-checked:bg-brand-500/10 text-center transition-all">
+                                        <i class="fa-solid fa-coins text-amber-400 mb-1 block text-lg"></i>
+                                        <span class="text-xs font-bold text-white block">USDT / Wallet</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Phone / Contact info -->
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">
+                                Phone Number / WhatsApp (For Receipt)
+                            </label>
+                            <input type="tel" id="contact-phone" required placeholder="09 767 906 490" class="w-full bg-gray-900/80 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-brand-500 text-sm">
+                        </div>
+
+                        <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-brand-500 to-brand-400 text-black font-extrabold text-base shadow-neon hover:shadow-neon-lg transition-all hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-bolt"></i>
+                            <span>Order Cofirm</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Right Calculation Summary & Live Orders Side Column -->
+                <div class="lg:col-span-5 space-y-6">
+                    
+                    <!-- Real-time Order Summary Box -->
+                    <div class="glass-panel p-6 rounded-3xl border border-gray-800">
+                        <h4 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-receipt text-brand-400"></i>
+                            <span>Order Summary</span>
+                        </h4>
+
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between text-gray-400">
+                                <span>Subtotal</span>
+                                <span id="summary-subtotal" class="text-white font-medium">$1.65</span>
+                            </div>
+                            <div class="flex justify-between text-gray-400">
+                                <span>Instant Discount (5%)</span>
+                                <span id="summary-discount" class="text-brand-400 font-medium">-$0.08</span>
+                            </div>
+                            <div class="flex justify-between text-gray-400">
+                                <span>Processing Fee</span>
+                                <span class="text-emerald-400 font-medium">FREE</span>
+                            </div>
+                            <div class="border-t border-gray-800 my-2 pt-3 flex justify-between items-center">
+                                <span class="font-bold text-white text-base">Total Payment</span>
+                                <span id="summary-total" class="font-black text-2xl text-brand-400">$1.57</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 p-3 rounded-xl bg-brand-500/10 border border-brand-500/20 text-[11px] text-gray-300 space-y-1">
+                            <p class="font-semibold text-brand-400 flex items-center gap-1">
+                                <i class="fa-solid fa-shield-check"></i> Automated Top-Up Guarantee
+                            </p>
+                            <p>Items are directly credited to your player ID instantly after payment approval.</p>
+                        </div>
+                    </div>
+
+                    <!-- Live Orders Feed -->
+                    <div class="glass-panel p-6 rounded-3xl border border-gray-800">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-brand-400 animate-pulse"></span>
+                                Live Recent Orders
+                            </h4>
+                            <span class="text-[10px] text-gray-400 uppercase font-semibold">Realtime Feed</span>
+                        </div>
+
+                        <!-- Ticker Box Container -->
+                        <div class="h-48 overflow-hidden relative">
+                            <div id="ticker-feed" class="space-y-3">
+                                <!-- Order feed item template (Dynamic) -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Why Choose IVR Section -->
+    <section id="features" class="py-20 relative bg-gray-950/60 border-t border-gray-800/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-14">
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl">Why Top Up With IVR?</h2>
+                <p class="text-gray-400 mt-2 text-sm sm:text-base">Trusted by thousands of competitive gamers across the region for speed and reliability.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Feature 1 -->
+                <div class="glass-panel p-6 rounded-2xl glass-panel-interactive">
+                    <div class="w-12 h-12 rounded-xl bg-brand-500/20 border border-brand-500/30 flex items-center justify-center text-brand-400 text-2xl font-bold mb-4">
+                        <i class="fa-solid fa-bolt-lightning"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Automated Delivery</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">Direct API connection sends your diamonds or UC within 60 to 180 seconds automatically.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass-panel p-6 rounded-2xl glass-panel-interactive">
+                    <div class="w-12 h-12 rounded-xl bg-brand-500/20 border border-brand-500/30 flex items-center justify-center text-brand-400 text-2xl font-bold mb-4">
+                        <i class="fa-solid fa-tags"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Best Rates Guaranteed</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">Enjoy cheaper prices than official in-game stores with frequent promo discounts.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass-panel p-6 rounded-2xl glass-panel-interactive">
+                    <div class="w-12 h-12 rounded-xl bg-brand-500/20 border border-brand-500/30 flex items-center justify-center text-brand-400 text-2xl font-bold mb-4">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">100% Safe & Verified</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">Official direct top-up partners. Zero risk of account bans or negative diamond balances.</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="glass-panel p-6 rounded-2xl glass-panel-interactive">
+                    <div class="w-12 h-12 rounded-xl bg-brand-500/20 border border-brand-500/30 flex items-center justify-center text-brand-400 text-2xl font-bold mb-4">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">24/7 Gamer Support</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">Dedicated support agents ready to help you with order queries anytime day or night.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-950 border-t border-gray-800/80 pt-16 pb-8 text-gray-400 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-gray-800">
+                
+                <!-- Col 1: Brand Info -->
+                <div class="space-y-4 md:col-span-1">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center text-black font-black">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <span class="font-extrabold text-lg text-white">IVR | Iveriselkunn</span>
+                    </div>
+                    <p class="text-gray-400 leading-relaxed">
+                        The ultimate destination for fast, safe, and reliable MLBB Diamonds & PUBG Mobile UC recharges.
+                    </p>
+                </div>
+
+                <!-- Col 2: Quick Links -->
+                <div>
+                    <h4 class="font-bold text-white text-sm mb-4">Games & Top-Ups</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#mlbb" onclick="switchGameTab('mlbb')" class="hover:text-brand-400 transition-colors">MLBB Diamonds</a></li>
+                        <li><a href="#mlbb" onclick="switchGameTab('mlbb')" class="hover:text-brand-400 transition-colors">Weekly Diamond Pass</a></li>
+                        <li><a href="#pubg" onclick="switchGameTab('pubg')" class="hover:text-brand-400 transition-colors">PUBG Mobile UC</a></li>
+                        <li><a href="#pubg" onclick="switchGameTab('pubg')" class="hover:text-brand-400 transition-colors">PUBG Royale Pass</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Customer Care -->
+                <div>
+                    <h4 class="font-bold text-white text-sm mb-4">Support & Help</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Track Order Status</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Payment Guide</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Contact & Socials -->
+                <div>
+                    <h4 class="font-bold text-white text-sm mb-4">Connect With Us</h4>
+                    <div class="flex gap-3 mb-4">
+                        <a href="#" class="w-9 h-9 rounded-lg glass-panel flex items-center justify-center hover:text-brand-400 hover:border-brand-500 transition-colors">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-lg glass-panel flex items-center justify-center hover:text-brand-400 hover:border-brand-500 transition-colors">
+                            <i class="fa-brands fa-telegram"></i>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-lg glass-panel flex items-center justify-center hover:text-brand-400 hover:border-brand-500 transition-colors">
+                            <i class="fa-brands fa-discord"></i>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-lg glass-panel flex items-center justify-center hover:text-brand-400 hover:border-brand-500 transition-colors">
+                            <i class="fa-brands fa-viber"></i>
+                        </a>
+                    </div>
+                    <p class="text-gray-400">Support Hours: 24/7 Always Active</p>
+                </div>
+
+            </div>
+
+            <!-- Bottom Copyright & Disclaimer -->
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+                <p>&copy; 2026 IVR - Iveriselkunn. All rights reserved.</p>
+                <p class="text-gray-400">Disclaimer: IVR is an independent digital game item platform.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Receipt / Checkout Modal Simulation -->
+    <div id="order-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+        <div class="glass-panel max-w-md w-full p-6 rounded-3xl border border-brand-500/50 shadow-neon-lg relative animate-scale-up">
+            
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white p-2">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <!-- Success Header -->
+            <div class="text-center space-y-2 mb-6">
+                <div class="w-16 h-16 bg-brand-500/20 text-brand-400 border border-brand-500/40 rounded-full flex items-center justify-center text-3xl mx-auto shadow-neon">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white">Order Placed Successfully!</h3>
+                <p class="text-xs text-gray-400">Order ID: <span id="modal-order-id" class="text-brand-400 font-mono font-bold">#IVR-98421</span></p>
+            </div>
+
+            <!-- Receipt Details -->
+            <div class="bg-gray-900/80 rounded-2xl p-4 border border-gray-800 space-y-3 text-xs mb-6">
+                <div class="flex justify-between border-b border-gray-800 pb-2">
+                    <span class="text-gray-400">Game Item:</span>
+                    <span id="modal-item-name" class="font-bold text-white">257 MLBB Diamonds</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-800 pb-2">
+                    <span class="text-gray-400">Player ID / Zone ID:</span>
+                    <span id="modal-player-id" class="font-mono text-white">12345678 (2024)</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-800 pb-2">
+                    <span class="text-gray-400">Payment Method:</span>
+                    <span id="modal-payment" class="text-white font-bold">KPay</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-800 pb-2">
+                    <span class="text-gray-400">Estimated Delivery:</span>
+                    <span class="text-brand-400 font-bold">1 - 3 Minutes</span>
+                </div>
+                <div class="flex justify-between pt-1 text-sm font-bold">
+                    <span class="text-gray-300">Amount Paid:</span>
+                    <span id="modal-total-price" class="text-brand-400 font-black">$4.60</span>
+                </div>
+            </div>
+
+            <!-- Copy Order ID Action -->
+            <div class="space-y-3">
+                <button onclick="copyReceiptCode()" class="w-full py-3 rounded-xl bg-brand-500 text-black font-extrabold text-sm shadow-neon hover:bg-brand-400 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-copy"></i>
+                    <span id="copy-btn-text">Copy Receipt ID</span>
+                </button>
+                <button onclick="closeModal()" class="w-full py-3 rounded-xl bg-gray-800 text-gray-300 font-semibold text-sm hover:bg-gray-700 transition-all">
+                    Close & Return to Shop
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Interactive Logic JavaScript -->
+    <script>
+        // Game Catalog Data
+        const packagesData = {
+            mlbb: [
+                { id: 'ml-1', title: '86 Diamonds', price: 1.65, bonus: '+8 Bonus', popular: false },
+                { id: 'ml-2', title: '172 Diamonds', price: 3.25, bonus: '+16 Bonus', popular: false },
+                { id: 'ml-3', title: '257 Diamonds', price: 4.85, bonus: '+25 Bonus', popular: true },
+                { id: 'ml-4', title: '706 Diamonds', price: 12.99, bonus: '+85 Bonus', popular: false },
+                { id: 'ml-5', title: '2195 Diamonds', price: 38.50, bonus: '+360 Bonus', popular: false },
+                { id: 'ml-6', title: '3688 Diamonds', price: 62.00, bonus: '+610 Bonus', popular: false },
+                { id: 'ml-pass1', title: 'Weekly Diamond Pass', price: 2.10, bonus: '210 Dia Total', popular: true },
+                { id: 'ml-pass2', title: 'Twilight Pass', price: 9.50, bonus: 'Exclusive Skin', popular: false }
+            ],
+            pubg: [
+                { id: 'pubg-1', title: '60 UC', price: 0.99, bonus: 'Instant', popular: false },
+                { id: 'pubg-2', title: '325 UC', price: 4.99, bonus: '+25 Bonus', popular: true },
+                { id: 'pubg-3', title: '660 UC', price: 9.99, bonus: '+60 Bonus', popular: false },
+                { id: 'pubg-4', title: '1800 UC', price: 24.99, bonus: '+300 Bonus', popular: true },
+                { id: 'pubg-5', title: '3850 UC', price: 49.99, bonus: '+850 Bonus', popular: false },
+                { id: 'pubg-6', title: '8100 UC', price: 99.99, bonus: '+2100 Bonus', popular: false },
+                { id: 'pubg-rp1', title: 'Royale Pass Pack', price: 9.80, bonus: 'Current Season', popular: false },
+                { id: 'pubg-rp2', title: 'Elite Plus Pass', price: 23.50, bonus: 'Rank Up +25', popular: false }
+            ]
+        };
+
+        // State variables
+        let currentGame = 'mlbb';
+        let selectedPackage = packagesData.mlbb[2]; // Default 257 MLBB Diamonds
+
+        // DOM Load Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            renderPackages();
+            updateOrderSummary();
+            initLiveOrderFeed();
+            initCounterAnimation();
+        });
+
+        // Toggle Mobile Navigation
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+        document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
+
+        // Switch Game Tab Logic
+        function switchGameTab(game) {
+            currentGame = game;
+            
+            const btnMlbb = document.getElementById('tab-btn-mlbb');
+            const btnPubg = document.getElementById('tab-btn-pubg');
+            const formMlbb = document.getElementById('form-game-mlbb');
+            const formPubg = document.getElementById('form-game-pubg');
+            const zoneWrapper = document.getElementById('zone-id-wrapper');
+            const labelUserId = document.getElementById('label-user-id');
+            const idHelpText = document.getElementById('id-help-text');
+
+            if (game === 'mlbb') {
+                // Style Active Tab Button
+                btnMlbb.className = 'px-6 py-3 rounded-xl font-bold text-sm transition-all flex items-center gap-2 bg-gradient-to-r from-brand-500 to-brand-400 text-black shadow-neon';
+                btnPubg.className = 'px-6 py-3 rounded-xl font-bold text-sm text-gray-400 hover:text-white transition-all flex items-center gap-2';
+
+                // Form toggle buttons
+                formMlbb.className = 'p-3 rounded-xl border border-brand-500 bg-brand-500/10 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2';
+                formPubg.className = 'p-3 rounded-xl border border-gray-800 bg-gray-900/50 text-gray-400 font-bold text-xs sm:text-sm flex items-center justify-center gap-2';
+
+                // Show Zone ID for MLBB
+                zoneWrapper.classList.remove('hidden');
+                labelUserId.innerHTML = 'User ID <span class="text-brand-400">*</span>';
+                idHelpText.innerText = 'Open Mobile Legends profile. Your User ID and Zone ID are shown next to your avatar (e.g., 12345678 (2024)).';
+                
+                // Set default package for MLBB
+                selectedPackage = packagesData.mlbb[2];
+
+            } else {
+                // Style Active Tab Button for PUBG
+                btnPubg.className = 'px-6 py-3 rounded-xl font-bold text-sm transition-all flex items-center gap-2 bg-gradient-to-r from-brand-500 to-brand-400 text-black shadow-neon';
+                btnMlbb.className = 'px-6 py-3 rounded-xl font-bold text-sm text-gray-400 hover:text-white transition-all flex items-center gap-2';
+
+                // Form toggle buttons
+                formPubg.className = 'p-3 rounded-xl border border-brand-500 bg-brand-500/10 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2';
+                formMlbb.className = 'p-3 rounded-xl border border-gray-800 bg-gray-900/50 text-gray-400 font-bold text-xs sm:text-sm flex items-center justify-center gap-2';
+
+                // Hide Zone ID for PUBG (Only Player ID needed)
+                zoneWrapper.classList.add('hidden');
+                labelUserId.innerHTML = 'Player Character ID <span class="text-brand-400">*</span>';
+                idHelpText.innerText = 'Open PUBG Mobile profile. Copy your numeric Character ID (e.g., 5123984712).';
+
+                // Set default package for PUBG
+                selectedPackage = packagesData.pubg[2];
+            }
+
+            renderPackages();
+            updateOrderSummary();
+        }
+
+        // Render Packages Cards
+        function renderPackages() {
+            const gridMlbb = document.getElementById('grid-mlbb');
+            const gridPubg = document.getElementById('grid-pubg');
+
+            if (currentGame === 'mlbb') {
+                gridMlbb.classList.remove('hidden');
+                gridPubg.classList.add('hidden');
+                gridMlbb.innerHTML = packagesData.mlbb.map(item => createCardHTML(item, 'mlbb')).join('');
+            } else {
+                gridPubg.classList.remove('hidden');
+                gridMlbb.classList.add('hidden');
+                gridPubg.innerHTML = packagesData.pubg.map(item => createCardHTML(item, 'pubg')).join('');
+            }
+        }
+
+        // Helper to generate Card HTML
+        function createCardHTML(item, gameType) {
+            const isSelected = selectedPackage.id === item.id;
+            const icon = gameType === 'mlbb' ? 'fa-shield-halved text-brand-400' : 'fa-crosshair text-amber-400';
+            
+            return `
+                <div onclick="selectPackage('${item.id}', '${gameType}')" 
+                     class="glass-panel p-5 rounded-2xl glass-panel-interactive cursor-pointer relative flex flex-col justify-between ${isSelected ? 'glow-border bg-brand-500/10' : ''}">
+                    
+                    ${item.popular ? `<span class="absolute top-3 right-3 text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-brand-500 text-black shadow-neon">Popular</span>` : ''}
+
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-gray-900/80 border border-gray-800 flex items-center justify-center mb-3 text-lg">
+                            <i class="fa-solid ${icon}"></i>
+                        </div>
+                        <h4 class="font-bold text-white text-sm sm:text-base">${item.title}</h4>
+                        <span class="inline-block mt-1 text-[11px] font-semibold text-brand-400 bg-brand-500/10 px-2 py-0.5 rounded border border-brand-500/20">
+                            ${item.bonus}
+                        </span>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-gray-800 flex items-center justify-between">
+                        <span class="text-white font-black text-base">$${item.price.toFixed(2)}</span>
+                        <span class="text-xs font-bold ${isSelected ? 'text-brand-400' : 'text-gray-400'} flex items-center gap-1">
+                            ${isSelected ? '<i class="fa-solid fa-circle-check"></i> Selected' : 'Select'}
+                        </span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Select item package
+        function selectPackage(pkgId, gameType) {
+            const list = packagesData[gameType];
+            const found = list.find(p => p.id === pkgId);
+            if (found) {
+                selectedPackage = found;
+                renderPackages();
+                updateOrderSummary();
+            }
+        }
+
+        // Scroll to order form
+        function scrollToOrder(diamonds, price, game) {
+            switchGameTab(game);
+            const section = document.getElementById('instant-topup');
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Update Dynamic Price Calculation
+        function updateOrderSummary() {
+            const subtotal = selectedPackage.price;
+            const discount = subtotal * 0.05; // 5% discount
+            const total = subtotal - discount;
+
+            // Form display update
+            document.getElementById('selected-pkg-title').innerText = selectedPackage.title;
+            document.getElementById('selected-pkg-game').innerText = currentGame === 'mlbb' ? 'Mobile Legends' : 'PUBG Mobile';
+            document.getElementById('selected-pkg-price').innerText = `$${subtotal.toFixed(2)}`;
+            document.getElementById('selected-pkg-icon').className = currentGame === 'mlbb' ? 'fa-solid fa-gem text-brand-400 text-xl' : 'fa-solid fa-crosshair text-amber-400 text-xl';
+
+            // Calculations update
+            document.getElementById('summary-subtotal').innerText = `$${subtotal.toFixed(2)}`;
+            document.getElementById('summary-discount').innerText = `-$${discount.toFixed(2)}`;
+            document.getElementById('summary-total').innerText = `$${total.toFixed(2)}`;
+        }
+
+        // Form Submission Simulation
+        function handleOrderSubmit(e) {
+            e.preventDefault();
+            
+            const userId = document.getElementById('user-id').value;
+            const zoneId = document.getElementById('zone-id').value;
+            const payment = document.querySelector('input[name="payment"]:checked').value;
+            const total = (selectedPackage.price * 0.95).toFixed(2);
+
+            // Populate Modal Receipt
+            document.getElementById('modal-order-id').innerText = '#IVR-' + Math.floor(100000 + Math.random() * 900000);
+            document.getElementById('modal-item-name').innerText = `${selectedPackage.title} (${currentGame.toUpperCase()})`;
+            document.getElementById('modal-player-id').innerText = currentGame === 'mlbb' ? `${userId} (${zoneId || '2024'})` : userId;
+            document.getElementById('modal-payment').innerText = payment;
+            document.getElementById('modal-total-price').innerText = `$${total}`;
+
+            // Show Modal
+            const modal = document.getElementById('order-modal');
+            modal.classList.remove('hidden');
+        }
+
+        // Modal Controls
+        function closeModal() {
+            document.getElementById('order-modal').classList.add('hidden');
+        }
+
+        // Copy Receipt Functionality
+        function copyReceiptCode() {
+            const code = document.getElementById('modal-order-id').innerText;
+            
+            // Clipboard Fallback Standard
+            const tempInput = document.createElement('input');
+            tempInput.value = code;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            const btnText = document.getElementById('copy-btn-text');
+            btnText.innerText = 'Copied to Clipboard!';
+            setTimeout(() => {
+                btnText.innerText = 'Copy Receipt ID';
+            }, 2000);
+        }
+
+        // Animated Live Order Ticker Simulation
+        function initLiveOrderFeed() {
+            const feedContainer = document.getElementById('ticker-feed');
+            const sampleOrders = [
+                { id: '489***12', item: '257 MLBB Diamonds', time: 'Just now' },
+                { id: '901***55', item: '660 PUBG UC', time: '1 min ago' },
+                { id: '312***89', item: 'Weekly Diamond Pass', time: '2 mins ago' },
+                { id: '772***04', item: '1800 PUBG UC', time: '3 mins ago' },
+                { id: '109***43', item: '86 MLBB Diamonds', time: '5 mins ago' }
+            ];
+
+            function renderFeed() {
+                feedContainer.innerHTML = sampleOrders.map(o => `
+                    <div class="p-3 rounded-xl bg-gray-900/60 border border-gray-800 flex items-center justify-between text-xs animate-fade-in">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-circle-check text-brand-400"></i>
+                            <div>
+                                <span class="text-white font-mono font-semibold">ID ${o.id}</span>
+                                <p class="text-gray-400 text-[10px]">${o.item}</p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] text-gray-400 font-medium">${o.time}</span>
+                    </div>
+                `).join('');
+            }
+
+            renderFeed();
+
+            // Simulate periodic incoming orders
+            setInterval(() => {
+                const randomId = Math.floor(100 + Math.random() * 899) + '***' + Math.floor(10 + Math.random() * 89);
+                const randomItems = ['257 MLBB Diamonds', '325 PUBG UC', 'Weekly Diamond Pass', '706 MLBB Diamonds', '60 PUBG UC'];
+                const newItem = randomItems[Math.floor(Math.random() * randomItems.length)];
+                
+                sampleOrders.unshift({ id: randomId, item: newItem, time: 'Just now' });
+                sampleOrders.pop();
+                renderFeed();
+            }, 6000);
+        }
+
+        // Animated Counter Numbers
+        function initCounterAnimation() {
+            let count = 45Million;
+            const target = 1000M;
+            const counterEl = document.getElementById('stat-gamers');
+            
+            const timer = setInterval(() => {
+                count += 1;
+                counterEl.innerText = count;
+                if (count >= target) clearInterval(timer);
+            }, 100);
+        }
+    </script>
+</body>
+</html>
